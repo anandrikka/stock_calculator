@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stock_calculator/utils/enum_lists.dart';
-import 'package:stock_calculator/utils/enums.dart';
-import 'package:stock_calculator/widgets/settings/fee_widget_utils.dart'
+import 'package:stockcalculator/utils/enum_lists.dart';
+import 'package:stockcalculator/utils/enums.dart';
+import 'package:stockcalculator/widgets/settings/fee_widget_utils.dart'
     as feeWidgetUtils;
 
 class AccountFee extends StatelessWidget {

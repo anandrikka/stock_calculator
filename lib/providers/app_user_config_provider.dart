@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stock_calculator/models/app_user_config_entity.dart';
-import 'package:stock_calculator/repo/app_user_config_repository.dart';
-import 'package:stock_calculator/utils/enums.dart';
+import 'package:stockcalculator/models/app_user_config_entity.dart';
+import 'package:stockcalculator/repo/app_user_config_repository.dart';
+import 'package:stockcalculator/utils/enums.dart';
 
 class AppUserConfigProvider extends ChangeNotifier {
   Map<UserPreference, dynamic> _userConfig = {

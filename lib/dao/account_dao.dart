@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:stock_calculator/dao/base_dao.dart';
-import 'package:stock_calculator/models/account_entity.dart';
+import 'package:stockcalculator/dao/base_dao.dart';
+import 'package:stockcalculator/models/account_entity.dart';
 
 class AccountDao extends BaseDao<int, AccountEntity> {
   @override

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:stock_calculator/models/fee_model.dart';
-import 'package:stock_calculator/utils/enums.dart';
+import 'package:stockcalculator/models/fee_model.dart';
+import 'package:stockcalculator/utils/enums.dart';
 
 class AccountEntity {
   static const String TABLE = 'ACCOUNT';

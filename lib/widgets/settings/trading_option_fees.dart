@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stock_calculator/utils/constants.dart';
-import 'package:stock_calculator/widgets/settings/settings_page_list_item.dart';
-import 'package:stock_calculator/widgets/settings/trading_option_fee_item.dart';
+import 'package:stockcalculator/utils/constants.dart';
+import 'package:stockcalculator/widgets/settings/settings_page_list_item.dart';
+import 'package:stockcalculator/widgets/settings/trading_option_fee_item.dart';
 
 class TradingOptionFees extends StatelessWidget {
   @override

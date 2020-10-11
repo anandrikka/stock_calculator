@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stock_calculator/models/account_entity.dart';
-import 'package:stock_calculator/models/calculate_request_model.dart';
-import 'package:stock_calculator/models/option.dart';
-import 'package:stock_calculator/providers/account_provider.dart';
-import 'package:stock_calculator/providers/app_user_config_provider.dart';
-import 'package:stock_calculator/providers/fee_config_provider.dart';
-import 'package:stock_calculator/utils/alerts.dart';
-import 'package:stock_calculator/utils/enum_lists.dart';
-import 'package:stock_calculator/utils/enums.dart';
-import 'package:stock_calculator/widgets/common/choose_alert_dialog.dart';
-import 'package:stock_calculator/widgets/common/radio_button.dart';
-import 'package:stock_calculator/widgets/home/calculate_result.dart';
+import 'package:stockcalculator/models/account_entity.dart';
+import 'package:stockcalculator/models/calculate_request_model.dart';
+import 'package:stockcalculator/models/option.dart';
+import 'package:stockcalculator/providers/account_provider.dart';
+import 'package:stockcalculator/providers/app_user_config_provider.dart';
+import 'package:stockcalculator/providers/fee_config_provider.dart';
+import 'package:stockcalculator/utils/alerts.dart';
+import 'package:stockcalculator/utils/enum_lists.dart';
+import 'package:stockcalculator/utils/enums.dart';
+import 'package:stockcalculator/widgets/common/choose_alert_dialog.dart';
+import 'package:stockcalculator/widgets/common/radio_button.dart';
+import 'package:stockcalculator/widgets/home/calculate_result.dart';
 
 class CalculatorScreen extends StatefulWidget {
   final String title;
@@ -154,6 +154,9 @@ class _HomePageState extends State<CalculatorScreen> {
                 if (_showResult)
                   Consumer<FeeConfigProvider>(
                     builder: (_, fcp, __) {
+                      if (!fcp.loaded) {
+                        return SizedBox();
+                      }
                       CalculateRequestModel calcModel = CalculateRequestModel(
                         exchange: _exchange,
                         tradeType: _tradeType,
@@ -167,7 +170,6 @@ class _HomePageState extends State<CalculatorScreen> {
                           orElse: () => AccountEntity.create(),
                         ),
                       );
-                      print(calcModel.calculationResult);
                       return CalculateResults(
                         inputs: calcModel,
                         show: _showResult,
@@ -214,7 +216,7 @@ class _HomePageState extends State<CalculatorScreen> {
           }
         },
         onFieldSubmitted: (_) {
-          print('ok');
+          // print('ok');
         },
         decoration: InputDecoration(
           labelText: label,
@@ -353,7 +355,7 @@ class _HomePageState extends State<CalculatorScreen> {
         sellPrice.isEmpty() &&
         quantity.isEmpty() &&
         amount.isEmpty()) {
-      message = 'Form submitted with empty values';
+      message = 'Form submitted with empty values.';
     } else if (buyPrice.isEmpty() && sellPrice.isEmpty()) {
       message = 'Either "Buy Price" or "Sell Price" is missing.';
     } else if (amount.isEmpty() && quantity.isEmpty()) {

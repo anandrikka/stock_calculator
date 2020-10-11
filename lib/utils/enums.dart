@@ -1,6 +1,4 @@
-import 'dart:ffi';
-
-import 'package:stock_calculator/utils/constants.dart';
+import 'package:stockcalculator/utils/constants.dart';
 
 enum TradingOption {
   EQUITY_DELIVERY,

@@ -1,5 +1,5 @@
-import 'package:stock_calculator/dao/base_dao.dart';
-import 'package:stock_calculator/models/app_user_config_entity.dart';
+import 'package:stockcalculator/dao/base_dao.dart';
+import 'package:stockcalculator/models/app_user_config_entity.dart';
 
 class AppUserConfigDao extends BaseDao<String, AppUserConfigEntity> {
   @override

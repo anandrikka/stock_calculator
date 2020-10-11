@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:stock_calculator/models/account_entity.dart';
-import 'package:stock_calculator/models/fee_model.dart';
-import 'package:stock_calculator/providers/account_provider.dart';
-import 'package:stock_calculator/screens/account_management_screen.dart';
-import 'package:stock_calculator/utils/alerts.dart' as alertUtils;
-import 'package:stock_calculator/utils/enums.dart';
-import 'package:stock_calculator/widgets/settings/account_fee.dart';
+import 'package:stockcalculator/models/account_entity.dart';
+import 'package:stockcalculator/models/fee_model.dart';
+import 'package:stockcalculator/providers/account_provider.dart';
+import 'package:stockcalculator/screens/account_management_screen.dart';
+import 'package:stockcalculator/utils/alerts.dart' as alertUtils;
+import 'package:stockcalculator/utils/enums.dart';
+import 'package:stockcalculator/widgets/settings/account_fee.dart';
 
 class AddOrEditAccountScreen extends StatefulWidget {
   @override

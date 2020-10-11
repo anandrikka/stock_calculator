@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stock_calculator/models/option.dart';
-import 'package:stock_calculator/utils/constants.dart';
-import 'package:stock_calculator/utils/enums.dart';
+import 'package:stockcalculator/models/option.dart';
+import 'package:stockcalculator/utils/constants.dart';
+import 'package:stockcalculator/utils/enums.dart';
 
 final double widthFactor = 1 / 3;
 

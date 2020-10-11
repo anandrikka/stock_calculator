@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stock_calculator/models/fee_model.dart';
-import 'package:stock_calculator/providers/fee_config_provider.dart';
-import 'package:stock_calculator/utils/enums.dart';
-import 'package:stock_calculator/widgets/settings/single_fee.dart';
+import 'package:stockcalculator/models/fee_model.dart';
+import 'package:stockcalculator/providers/fee_config_provider.dart';
+import 'package:stockcalculator/utils/enums.dart';
+import 'package:stockcalculator/widgets/settings/single_fee.dart';
 
 class SingleFeeScreen extends StatefulWidget {
   final String title;

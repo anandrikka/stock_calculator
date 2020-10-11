@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stock_calculator/utils/app_theme.dart';
-import 'package:stock_calculator/widgets/routes/app_router.dart';
-import 'package:stock_calculator/widgets/routes/routes.dart';
+import 'package:stockcalculator/utils/app_theme.dart';
+import 'package:stockcalculator/widgets/routes/app_router.dart';
+import 'package:stockcalculator/widgets/routes/routes.dart';
 
 void main() {
   runApp(Main());

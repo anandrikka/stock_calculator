@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:stock_calculator/utils/constants.dart';
+import 'package:stockcalculator/utils/constants.dart';
 
 class DummyView extends StatefulWidget {
   final String title;

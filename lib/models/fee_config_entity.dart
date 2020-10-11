@@ -1,4 +1,4 @@
-import 'package:stock_calculator/utils/enums.dart';
+import 'package:stockcalculator/utils/enums.dart';
 
 class FeeConfigEntity {
   static const String TABLE = 'FEES_CONFIG';

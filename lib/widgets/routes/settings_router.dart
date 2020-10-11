@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:stock_calculator/screens/account_management_screen.dart';
-import 'package:stock_calculator/screens/add_or_edit_account_screen.dart';
-import 'package:stock_calculator/screens/buy_and_sell_fee_screen.dart';
-import 'package:stock_calculator/screens/default_fees_page.dart';
-import 'package:stock_calculator/screens/exchange_fees_screen.dart';
-import 'package:stock_calculator/screens/settings_landing_screen.dart';
-import 'package:stock_calculator/screens/single_fee_screen.dart';
-import 'package:stock_calculator/utils/enums.dart';
-import 'package:stock_calculator/widgets/dummy_view.dart';
-import 'package:stock_calculator/widgets/routes/routes.dart';
+import 'package:stockcalculator/screens/account_management_screen.dart';
+import 'package:stockcalculator/screens/add_or_edit_account_screen.dart';
+import 'package:stockcalculator/screens/buy_and_sell_fee_screen.dart';
+import 'package:stockcalculator/screens/default_fees_page.dart';
+import 'package:stockcalculator/screens/exchange_fees_screen.dart';
+import 'package:stockcalculator/screens/settings_landing_screen.dart';
+import 'package:stockcalculator/screens/single_fee_screen.dart';
+import 'package:stockcalculator/utils/enums.dart';
+import 'package:stockcalculator/widgets/dummy_view.dart';
+import 'package:stockcalculator/widgets/routes/routes.dart';
 
 class SettingsRouter extends StatefulWidget {
   final GlobalKey<NavigatorState> navigatorKey;

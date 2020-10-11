@@ -1,7 +1,7 @@
-import 'package:stock_calculator/dao/fee_config_dao.dart';
-import 'package:stock_calculator/models/fee_config_entity.dart';
-import 'package:stock_calculator/repo/base_repository.dart';
-import 'package:stock_calculator/utils/enums.dart';
+import 'package:stockcalculator/dao/fee_config_dao.dart';
+import 'package:stockcalculator/models/fee_config_entity.dart';
+import 'package:stockcalculator/repo/base_repository.dart';
+import 'package:stockcalculator/utils/enums.dart';
 
 class FeeConfigRepository extends BaseRepository<String, FeeConfigEntity> {
   final FeeConfigDao _feeConfigDao = FeeConfigDao();

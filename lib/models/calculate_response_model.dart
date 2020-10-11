@@ -8,6 +8,7 @@ class CalculateResponseModel {
   double gst = 0.0;
   double stampduty = 0.0;
   double sebi = 0.0;
+  double breakEvenPoints = 0.0;
 
   double get transactionAmount => buyTransactionAmount + sellTransactionAmount;
 

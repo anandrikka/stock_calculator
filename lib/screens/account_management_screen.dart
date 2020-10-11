@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stock_calculator/models/account_entity.dart';
-import 'package:stock_calculator/providers/account_provider.dart';
-import 'package:stock_calculator/widgets/routes/routes.dart';
+import 'package:stockcalculator/models/account_entity.dart';
+import 'package:stockcalculator/providers/account_provider.dart';
+import 'package:stockcalculator/widgets/routes/routes.dart';
 
 class AccountManagementScreen extends StatelessWidget {
   final String title;

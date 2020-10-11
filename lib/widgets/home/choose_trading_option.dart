@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stock_calculator/utils/constants.dart';
-import 'package:stock_calculator/utils/enums.dart';
-import 'package:stock_calculator/widgets/common/radio_button.dart';
+import 'package:stockcalculator/utils/constants.dart';
+import 'package:stockcalculator/utils/enums.dart';
+import 'package:stockcalculator/widgets/common/radio_button.dart';
 
 class ChooseTradingOption extends StatefulWidget {
   final TradingOption selectedValue;

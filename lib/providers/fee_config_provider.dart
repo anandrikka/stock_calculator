@@ -1,13 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:stock_calculator/models/fee_config_entity.dart';
-import 'package:stock_calculator/models/fee_model.dart';
-import 'package:stock_calculator/repo/fee_config_repository.dart';
-import 'package:stock_calculator/utils/enums.dart';
+import 'package:stockcalculator/models/fee_config_entity.dart';
+import 'package:stockcalculator/models/fee_model.dart';
+import 'package:stockcalculator/repo/fee_config_repository.dart';
+import 'package:stockcalculator/utils/enums.dart';
 
 class FeeConfigProvider extends ChangeNotifier {
   final FeeConfigRepository _feeConfigRepository = FeeConfigRepository();
+  bool loaded = false;
   Map<FeeType, Map<TradingOption, dynamic>> _feeConfig = {};
 
   Map<FeeType, Map<TradingOption, dynamic>> get feeConfig => _feeConfig;
@@ -35,6 +36,7 @@ class FeeConfigProvider extends ChangeNotifier {
         _feeConfig[fcm.feeType][fcm.tradingOption] = jsonDecode(fcm.feeJson);
       }
     });
+    loaded = true;
     notifyListeners();
   }
 

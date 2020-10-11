@@ -1,4 +1,4 @@
-package techanand.apps.stock_calculator
+package techanand.apps.stockcalculator
 
 import io.flutter.embedding.android.FlutterActivity
 

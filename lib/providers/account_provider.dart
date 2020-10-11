@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:stock_calculator/models/account_entity.dart';
-import 'package:stock_calculator/repo/account_repository.dart';
+import 'package:stockcalculator/models/account_entity.dart';
+import 'package:stockcalculator/repo/account_repository.dart';
 
 class AccountProvider extends ChangeNotifier {
   AccountRepository _accountRepo = AccountRepository();

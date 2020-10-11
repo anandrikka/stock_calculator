@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:stock_calculator/sql/v1.dart';
+import 'package:stockcalculator/sql/v1.dart';
 
 class DatabaseProvider {
-  static const _dbName = 'stock_calculator.db';
+  static const _dbName = 'stockcalculator.db';
   static const _dbVersion = 1;
   DatabaseProvider._();
   static final DatabaseProvider dbProvider = DatabaseProvider._();

@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:stock_calculator/models/account_entity.dart';
-import 'package:stock_calculator/models/calculate_response_model.dart';
-import 'package:stock_calculator/models/fee_model.dart';
-import 'package:stock_calculator/utils/enums.dart';
+import 'package:stockcalculator/models/account_entity.dart';
+import 'package:stockcalculator/models/calculate_response_model.dart';
+import 'package:stockcalculator/models/fee_model.dart';
+import 'package:stockcalculator/utils/enums.dart';
 
 class CalculateRequestModel {
   final TradingOption tradeType;
@@ -35,25 +35,76 @@ class CalculateRequestModel {
     // transaction amount
     if (quantity > 0) {
       response.buyTransactionAmount = buyPrice * quantity;
-      response.sellTransactionAmount = sellPrice * quantity;
     } else if (amount > 0) {
       response.buyTransactionAmount = amount;
       quantity = (amount / buyPrice).floorToDouble();
     }
+    if (sellPrice.isNotEmpty() && quantity.isNotEmpty()) {
+      response.sellTransactionAmount = sellPrice * quantity;
+    }
     // Brokerage
+    response.brokerage = _calcBrokerage(
+      response.buyTransactionAmount,
+      response.sellTransactionAmount,
+      response,
+    );
+    // SST
+    response.sst = _calcSstCharges(
+      response.buyTransactionAmount,
+      response.sellTransactionAmount,
+      response,
+    );
+    // Exchange
+    response.exchange = _calcExchange(
+      response.transactionAmount,
+      response,
+    );
+    // GST
+    response.gst = _calcGST(
+      response.brokerage,
+      response.exchange,
+      response,
+    );
+    // SEBI
+    response.sebi = _calcSEBI(
+      response.buyTransactionAmount,
+      response.sellTransactionAmount,
+      response,
+    );
+    // Stamp Duty
+    response.stampduty = _calcStampduty(
+      response.buyTransactionAmount,
+      response.sellTransactionAmount,
+      response,
+    );
+    if (sellPrice.isNotEmpty() && buyPrice.isNotEmpty()) {
+      response.profitOrLoss = response.sellTransactionAmount -
+          response.buyTransactionAmount -
+          response.totalTaxesAndCharges;
+    }
+    double breakEvenPoints = _calcBrakeEvenPoints(response);
+    print('Breakeven Points: ' + breakEvenPoints.toStringAsFixed(2));
+    response.breakEvenPoints = breakEvenPoints;
+    return response;
+  }
+
+  _calcBrokerage(
+    double buyTxAmt,
+    double sellTxAmt,
+    CalculateResponseModel response,
+  ) {
     FeeModel accountFee = account.fees[tradeType];
+    double brokerage = 0.0;
     if (accountFee.flat) {
-      if (response.buyTransactionAmount.isNotEmpty()) {
-        response.brokerage += accountFee.flatRate;
+      if (buyTxAmt.isNotEmpty()) {
+        brokerage += accountFee.flatRate;
       }
-      if (response.sellTransactionAmount.isNotEmpty()) {
-        response.brokerage += accountFee.flatRate;
+      if (sellTxAmt.isNotEmpty()) {
+        brokerage += accountFee.flatRate;
       }
     } else {
-      var buyBrokerage =
-          response.buyTransactionAmount * accountFee.percent / 100;
-      var sellBrokerage =
-          response.sellTransactionAmount * accountFee.percent / 100;
+      var buyBrokerage = buyTxAmt * accountFee.percent / 100;
+      var sellBrokerage = sellTxAmt * accountFee.percent / 100;
       if (accountFee.min.isNotEmpty() && buyBrokerage < accountFee.min) {
         buyBrokerage = accountFee.min;
       }
@@ -66,54 +117,142 @@ class CalculateRequestModel {
       if (accountFee.max.isNotEmpty() && sellBrokerage > accountFee.max) {
         sellBrokerage = accountFee.max;
       }
-      response.brokerage = buyBrokerage + sellBrokerage;
+      brokerage = buyBrokerage + sellBrokerage;
     }
-    // SST
+    return brokerage;
+  }
+
+  _calcSstCharges(
+    double buyTxAmt,
+    double sellTxAmt,
+    CalculateResponseModel response,
+  ) {
+    double sst = 0.0;
     if (fees.containsKey(FeeType.SECURITY_TRANSACTION_TAX)) {
       BuySellModel sstFees =
           fees[FeeType.SECURITY_TRANSACTION_TAX][tradeType] as BuySellModel;
-      response.sst =
-          (response.buyTransactionAmount * sstFees.buy.percent / 100) +
-              (response.sellTransactionAmount * sstFees.sell.percent / 100);
+      sst = (buyTxAmt * sstFees.buy.percent / 100) +
+          (sellTxAmt * sstFees.sell.percent / 100);
     }
+    return sst;
+  }
 
-    // Exchange
+  _calcExchange(
+    double txAmt,
+    CalculateResponseModel response,
+  ) {
     FeeType exchangeFeeType = exchange == TradeExchange.BSE
         ? FeeType.EXCHANGE_TRANSACTION_TAX_BSE
         : FeeType.EXCHANGE_TRANSACTION_TAX_NSE;
+    double exchangeFee = 0.0;
     if (fees.containsKey(exchangeFeeType)) {
       FeeModel exchangeFees = fees[exchangeFeeType][tradeType] as FeeModel;
-      response.exchange =
-          response.transactionAmount * exchangeFees.percent / 100;
+      exchangeFee = txAmt * exchangeFees.percent / 100;
     }
-    // GST
+    return exchangeFee;
+  }
+
+  _calcGST(
+    double brokerage,
+    double exchange,
+    CalculateResponseModel response,
+  ) {
+    double gst = 0.0;
     if (fees.containsKey(FeeType.GST)) {
       FeeModel gstFees = fees[FeeType.GST][tradeType] as FeeModel;
-      response.gst =
-          (response.brokerage + response.exchange) * gstFees.percent / 100;
+      gst = (brokerage + exchange) * gstFees.percent / 100;
     }
-    // SEBI
+    return gst;
+  }
+
+  _calcSEBI(
+    double buyTxAmt,
+    double sellTxAmt,
+    CalculateResponseModel response,
+  ) {
+    double sebi = 0.0;
     if (fees.containsKey(FeeType.SEBI)) {
       FeeModel sebiFees = fees[FeeType.SEBI][tradeType] as FeeModel;
-      response.sebi = (response.buyTransactionAmount * sebiFees.percent / 100) +
-          (response.sellTransactionAmount * sebiFees.percent / 100);
+      sebi = (buyTxAmt * sebiFees.percent / 100) +
+          (sellTxAmt * sebiFees.percent / 100);
     }
-    // Stamp Duty
+    return sebi;
+  }
+
+  _calcStampduty(
+    double buyTxAmt,
+    double sellTxAmt,
+    CalculateResponseModel response,
+  ) {
+    double stampduty = 0.0;
     if (fees.containsKey(FeeType.STAMP_DUTY)) {
       BuySellModel stampdutyFees =
           fees[FeeType.STAMP_DUTY][tradeType] as BuySellModel;
-      response.stampduty = (response.buyTransactionAmount *
-              stampdutyFees.buy.percent /
-              100) +
-          (response.sellTransactionAmount * stampdutyFees.sell.percent / 100);
+      stampduty = (buyTxAmt * stampdutyFees.buy.percent / 100) +
+          (sellTxAmt * stampdutyFees.sell.percent / 100);
     }
+    return stampduty;
+  }
 
-    if (sellPrice.isNotEmpty() && buyPrice.isNotEmpty()) {
-      response.profitOrLoss = response.sellTransactionAmount -
-          response.buyTransactionAmount -
-          response.totalTaxesAndCharges;
+  _calcBrakeEvenPoints(CalculateResponseModel response) {
+    double step = 1;
+    double buyTxAmt = buyPrice * quantity;
+    double totalBuyCharges = _totalCharges(buyTxAmt, 0.0, response);
+    double sellPrice = (totalBuyCharges + buyTxAmt) / quantity;
+    while (true) {
+      double sellTxAmt = sellPrice * quantity;
+      double totalSellCharges = _totalCharges(0.0, sellTxAmt, response);
+      double profitOrLoss =
+          sellTxAmt - buyTxAmt - totalBuyCharges - totalSellCharges;
+      if (profitOrLoss < -10) {
+        sellPrice += step;
+      } else if (profitOrLoss > 10) {
+        step = step - (step / 10);
+        sellPrice -= step;
+      } else {
+        break;
+      }
     }
-    return response;
+    return sellPrice - buyPrice;
+  }
+
+  _totalCharges(buyTxAmt, sellTxAmt, response) {
+    double brokerage = _calcBrokerage(
+      buyTxAmt,
+      sellTxAmt,
+      response,
+    );
+    // SST
+    double sst = _calcSstCharges(
+      buyTxAmt,
+      sellTxAmt,
+      response,
+    );
+    // Exchange
+    double exchange = _calcExchange(
+      buyTxAmt + sellTxAmt,
+      response,
+    );
+    // GST
+    double gst = _calcGST(
+      brokerage,
+      exchange,
+      response,
+    );
+    // SEBI
+    double sebi = _calcSEBI(
+      buyTxAmt,
+      sellTxAmt,
+      response,
+    );
+    // Stamp Duty
+    double stampduty = _calcStampduty(
+      buyTxAmt,
+      sellTxAmt,
+      response,
+    );
+    double totalTaxes = brokerage + sst + exchange + gst + stampduty + sebi;
+    return totalTaxes;
   }
 
   Map<String, dynamic> toJson() {
