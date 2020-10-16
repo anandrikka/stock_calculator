@@ -40,48 +40,48 @@ class _CalculateResultsState extends State<CalculateResults> {
             response: response,
           ),
         _buildRow(
-          label: 'Transaction Amount',
+          label: 'Transaction Amount (₹)',
           amount: response.transactionAmount,
         ),
         _buildTotalTaxesRow(context, response),
         if (!hideDetailedCharges) ...[
           _buildRow(
-            label: 'Brokerage',
+            label: 'Brokerage (₹)',
             amount: response.brokerage,
             padding: EdgeInsets.only(
               left: 8.0,
             ),
           ),
           _buildRow(
-            label: 'SST / CST',
+            label: 'SST / CST (₹)',
             amount: response.sst,
             padding: EdgeInsets.only(
               left: 8.0,
             ),
           ),
           _buildRow(
-            label: 'Exchange Charges',
+            label: 'Exchange Charges (₹)',
             amount: response.exchange,
             padding: EdgeInsets.only(
               left: 8.0,
             ),
           ),
           _buildRow(
-            label: 'GST',
+            label: 'GST (₹)',
             amount: response.gst,
             padding: EdgeInsets.only(
               left: 8.0,
             ),
           ),
           _buildRow(
-            label: 'SEBI',
+            label: 'SEBI (₹)',
             amount: response.sebi,
             padding: EdgeInsets.only(
               left: 8.0,
             ),
           ),
           _buildRow(
-            label: 'Stampduty',
+            label: 'Stampduty (₹)',
             amount: response.stampduty,
             padding: EdgeInsets.only(
               left: 8.0,
@@ -112,7 +112,7 @@ class _CalculateResultsState extends State<CalculateResults> {
                   children: [
                     Expanded(
                       child: Text(
-                        'Total Taxes & Charges',
+                        'Total Taxes & Charges (₹)',
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
@@ -165,9 +165,9 @@ class _CalculateResultsState extends State<CalculateResults> {
                       ),
                     ),
                     Text(
-                      'Profit/Loss Error Margin = +/- 10₹',
+                      'Profit/Loss Error Margin = +/- 5₹',
                       style: TextStyle(
-                        fontSize: 12.0,
+                        fontSize: 14.0,
                         color: Theme.of(context).errorColor,
                       ),
                     ),
@@ -226,7 +226,8 @@ class _CalculateResultsState extends State<CalculateResults> {
           alignment: Alignment.center,
           child: Row(
             children: [
-              _buildLabelText(response.profitOrLoss > 0 ? 'Profit' : 'Loss'),
+              _buildLabelText(
+                  response.profitOrLoss > 0 ? 'Profit (₹)' : 'Loss (₹)'),
               Container(
                 height: 45,
                 alignment: Alignment.centerRight,
@@ -284,7 +285,7 @@ _amountText(
   return SizedBox(
     width: width,
     child: Text(
-      '${amount.toStringAsFixed(2)}₹',
+      '${amount.toStringAsFixed(2)}', //₹
       textAlign: TextAlign.right,
       style: style,
     ),

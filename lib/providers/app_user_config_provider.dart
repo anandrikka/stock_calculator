@@ -4,6 +4,7 @@ import 'package:stockcalculator/repo/app_user_config_repository.dart';
 import 'package:stockcalculator/utils/enums.dart';
 
 class AppUserConfigProvider extends ChangeNotifier {
+  bool _loaded = false;
   Map<UserPreference, dynamic> _userConfig = {
     UserPreference.DEFAULT_TRADING_OPTION: TradingOption.EQUITY_DELIVERY,
     UserPreference.DEFAULT_EXCHANGE: TradeExchange.NSE,
@@ -35,10 +36,12 @@ class AppUserConfigProvider extends ChangeNotifier {
             int.parse(config.configValue);
       }
     });
+    _loaded = true;
     notifyListeners();
   }
 
   Map<UserPreference, dynamic> get userConfig => _userConfig;
+  bool get loaded => _loaded;
 
   getConfigValue(UserPreference key) {
     return _userConfig[key];

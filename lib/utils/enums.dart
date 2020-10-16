@@ -84,6 +84,10 @@ extension TradingOptionsExtension on TradingOption {
   String get typeLabel => type.toLowerCase().capitalize();
   String get label =>
       '${group.toLowerCase().capitalize()} - ${type.toLowerCase().capitalize()}';
+  bool get isFutures => type == 'FUTURES';
+  bool get isOptions => type == 'OPTIONS';
+  bool get isCurrencyType => group == 'CURRENCY';
+  bool get isCommodityType => group == 'COMMODITIES';
 }
 
 extension TabItemExtension on TabItem {

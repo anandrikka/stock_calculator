@@ -8,10 +8,11 @@ import 'package:stockcalculator/utils/enums.dart';
 
 class FeeConfigProvider extends ChangeNotifier {
   final FeeConfigRepository _feeConfigRepository = FeeConfigRepository();
-  bool loaded = false;
+  bool _loaded = false;
   Map<FeeType, Map<TradingOption, dynamic>> _feeConfig = {};
 
   Map<FeeType, Map<TradingOption, dynamic>> get feeConfig => _feeConfig;
+  bool get loaded => _loaded;
 
   FeeConfigProvider() {
     _fetchFeeConfigItems();
@@ -36,7 +37,7 @@ class FeeConfigProvider extends ChangeNotifier {
         _feeConfig[fcm.feeType][fcm.tradingOption] = jsonDecode(fcm.feeJson);
       }
     });
-    loaded = true;
+    _loaded = true;
     notifyListeners();
   }
 

@@ -4,6 +4,7 @@ import 'package:stockcalculator/screens/add_or_edit_account_screen.dart';
 import 'package:stockcalculator/screens/buy_and_sell_fee_screen.dart';
 import 'package:stockcalculator/screens/default_fees_page.dart';
 import 'package:stockcalculator/screens/exchange_fees_screen.dart';
+import 'package:stockcalculator/screens/review_options_screen.dart';
 import 'package:stockcalculator/screens/settings_landing_screen.dart';
 import 'package:stockcalculator/screens/single_fee_screen.dart';
 import 'package:stockcalculator/utils/enums.dart';
@@ -46,6 +47,7 @@ class _SettingsRouterState extends State<SettingsRouter> {
       ClearingChargesView: (ctx) => DefaultFeesPage(title: 'Clearning Charges'),
       BackupView: (ctx) => DummyView(title: 'Backup'),
       AddOrEditAccountView: (ctx) => AddOrEditAccountScreen(),
+      ReviewView: (ctx) => ReviewOptionsScreen()
     };
   }
 

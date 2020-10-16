@@ -40,7 +40,6 @@ class SettingsLandingScreen extends StatelessWidget {
           ..._buildAccountsManagement(context),
           ..._buildManageTaxesCharges(context),
           ..._buildSettings(context),
-          ..._appSettings(context),
         ],
       ),
     );
@@ -208,25 +207,23 @@ class SettingsLandingScreen extends StatelessWidget {
   List<Widget> _buildSettings(context) {
     return [
       SettingsPageListItem(header: true, title: 'Settings'),
-      SettingsPageListItem(
-        title: 'Backup',
-        icon: Icons.cloud_upload,
-        onClick: () {
-          Navigator.of(context).pushNamed(BackupView);
-        },
-      )
-    ];
-  }
-
-  List<Widget> _appSettings(context) {
-    return [
+      // SettingsPageListItem(
+      //   title: 'Backup',
+      //   icon: Icons.cloud_upload,
+      //   onClick: () {
+      //     Navigator.of(context).pushNamed(BackupView);
+      //   },
+      // ),
       SettingsPageListItem(
         title: 'Help',
         icon: Icons.feedback,
       ),
       SettingsPageListItem(
-        title: 'review',
+        title: 'Review',
         icon: Icons.rate_review,
+        onClick: () {
+          Navigator.of(context).pushNamed(ReviewView);
+        },
       )
     ];
   }

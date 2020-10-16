@@ -68,21 +68,19 @@ class AccountFee extends StatelessWidget {
                         if (!isFlatFee) ...[
                           _buildFeeRow(
                             context: context,
-                            label: 'Percent',
+                            label: 'Minimum Fee (₹)',
+                            controller: fees['min'] as TextEditingController,
+                          ),
+                          _buildFeeRow(
+                            context: context,
+                            label: 'Fee (%)',
                             controller:
                                 fees['percent'] as TextEditingController,
                           ),
                           _buildFeeRow(
                             context: context,
-                            label: 'Minimum Fee',
-                            controller: fees['min'] as TextEditingController,
-                            suffix: '₹',
-                          ),
-                          _buildFeeRow(
-                            context: context,
                             label: 'Maximum Fee',
                             controller: fees['max'] as TextEditingController,
-                            suffix: '₹',
                           ),
                         ]
                       ];
@@ -101,7 +99,6 @@ class AccountFee extends StatelessWidget {
     BuildContext context,
     TextEditingController controller,
     String label,
-    String suffix = '%',
   }) {
     return Container(
       height: _rowHeight,
@@ -123,7 +120,6 @@ class AccountFee extends StatelessWidget {
               controller: controller,
               isLast: false,
               editMode: edit,
-              suffix: suffix,
             ),
           ),
         ],
@@ -145,7 +141,7 @@ class AccountFee extends StatelessWidget {
           Container(
             width: MediaQuery.of(context).size.width / 3.0,
             child: Text(
-              'Flat Fee',
+              'Flat Fee (₹)',
               style: TextStyle(
                 fontSize: 16.0,
               ),
@@ -171,7 +167,6 @@ class AccountFee extends StatelessWidget {
                   context: context,
                   controller: fees['flatRate'] as TextEditingController,
                   editMode: edit,
-                  suffix: '₹',
                   isLast: false,
                 ),
               ),

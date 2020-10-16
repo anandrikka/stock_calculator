@@ -4,10 +4,13 @@ import 'package:stockcalculator/models/account_entity.dart';
 import 'package:stockcalculator/repo/account_repository.dart';
 
 class AccountProvider extends ChangeNotifier {
+  bool _loaded = false;
   AccountRepository _accountRepo = AccountRepository();
   List<AccountEntity> _accounts = [];
 
   List<AccountEntity> get accounts => _accounts;
+
+  bool get loaded => _loaded;
 
   AccountProvider() {
     _fetchAccounts();
@@ -15,6 +18,7 @@ class AccountProvider extends ChangeNotifier {
 
   _fetchAccounts() async {
     _accounts = await _accountRepo.getAllActiveAccounts();
+    _loaded = true;
     notifyListeners();
   }
 

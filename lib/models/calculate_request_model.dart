@@ -5,6 +5,8 @@ import 'package:stockcalculator/models/calculate_response_model.dart';
 import 'package:stockcalculator/models/fee_model.dart';
 import 'package:stockcalculator/utils/enums.dart';
 
+/// Notional Amount = (Strike Price * quantity) + (Buy Price * quantity) + (Sell Price * quantity)
+
 class CalculateRequestModel {
   final TradingOption tradeType;
   final TradeExchange exchange;
@@ -12,10 +14,10 @@ class CalculateRequestModel {
   final double buyPrice;
   final double sellPrice;
   double quantity;
-  final double amount;
   final Map<FeeType, Map<TradingOption, dynamic>> fees;
   double commodity;
   double strikePrice;
+  double lotSize;
 
   CalculateRequestModel({
     this.tradeType,
@@ -24,24 +26,17 @@ class CalculateRequestModel {
     this.buyPrice,
     this.sellPrice,
     this.quantity,
-    this.amount,
     this.fees,
     this.commodity,
     this.strikePrice,
+    this.lotSize,
   });
 
   CalculateResponseModel get calculationResult {
     CalculateResponseModel response = CalculateResponseModel();
     // transaction amount
-    if (quantity > 0) {
-      response.buyTransactionAmount = buyPrice * quantity;
-    } else if (amount > 0) {
-      response.buyTransactionAmount = amount;
-      quantity = (amount / buyPrice).floorToDouble();
-    }
-    if (sellPrice.isNotEmpty() && quantity.isNotEmpty()) {
-      response.sellTransactionAmount = sellPrice * quantity;
-    }
+    response.buyTransactionAmount = buyPrice * quantity;
+    response.sellTransactionAmount = sellPrice * quantity;
     // Brokerage
     response.brokerage = _calcBrokerage(
       response.buyTransactionAmount,
@@ -204,9 +199,9 @@ class CalculateRequestModel {
       double totalSellCharges = _totalCharges(0.0, sellTxAmt, response);
       double profitOrLoss =
           sellTxAmt - buyTxAmt - totalBuyCharges - totalSellCharges;
-      if (profitOrLoss < -10) {
+      if (profitOrLoss < -5) {
         sellPrice += step;
-      } else if (profitOrLoss > 10) {
+      } else if (profitOrLoss > 5) {
         step = step - (step / 10);
         sellPrice -= step;
       } else {
@@ -263,7 +258,6 @@ class CalculateRequestModel {
       'buyPrice': buyPrice.toStringSafe(),
       'sellPrice': sellPrice.toStringSafe(),
       'quantity': quantity.toStringSafe(),
-      'amount': amount.toStringSafe(),
       'fees': fees.toString(),
     };
   }

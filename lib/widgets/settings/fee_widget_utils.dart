@@ -47,7 +47,6 @@ Widget buildFeeInputValue({
   BuildContext context,
   TextEditingController controller,
   double widthFactor = 1 / 3,
-  suffix = '%',
 }) {
   final double width = MediaQuery.of(context).size.width * widthFactor;
   final EdgeInsets margin =
@@ -56,7 +55,7 @@ Widget buildFeeInputValue({
     width: width,
     margin: margin,
     child: Text(
-      null != controller.value ? '${controller.value.text}$suffix' : '',
+      null != controller.value ? '${controller.value.text}' : '',
       style: TextStyle(
         fontSize: 18.0,
         fontFamily: Constants.FIXED_FONT,
@@ -119,7 +118,6 @@ Widget buildTextInput({
   bool isLast = false,
   BuildContext context,
   bool editMode,
-  String suffix = '%',
 }) {
   return TextFormField(
     style: TextStyle(
@@ -135,10 +133,10 @@ Widget buildTextInput({
     controller: controller,
     decoration: InputDecoration(
       isDense: true,
-      suffixText: suffix,
-      suffixStyle: TextStyle(
-        color: Theme.of(context).accentColor,
-      ),
+      // suffixText: suffix,
+      // suffixStyle: TextStyle(
+      //   color: Theme.of(context).accentColor,
+      // ),
       hintText: '0.0',
       border: OutlineInputBorder(
         borderSide: BorderSide(width: 1.0),

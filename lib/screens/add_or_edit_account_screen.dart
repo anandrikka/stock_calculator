@@ -141,13 +141,6 @@ class _AccountScreenState extends State<AddOrEditAccountScreen> {
       );
       return;
     }
-    if (accountName.split(' ').length > 1) {
-      alertUtils.showAlert(
-        context: context,
-        message: 'Account name should be of single word',
-      );
-      return;
-    }
     accountName = accountName.capitalize();
     var fees = _controllers.map(
       (key, value) {
