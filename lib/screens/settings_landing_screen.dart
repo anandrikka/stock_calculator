@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:stockcalculator/models/option.dart';
 import 'package:stockcalculator/providers/account_provider.dart';
 import 'package:stockcalculator/providers/app_user_config_provider.dart';
+import 'package:stockcalculator/utils/app_utils.dart' as packageUtils;
 import 'package:stockcalculator/utils/enum_lists.dart';
 import 'package:stockcalculator/utils/enums.dart';
 import 'package:stockcalculator/widgets/common/choose_alert_dialog.dart';
@@ -217,12 +218,16 @@ class SettingsLandingScreen extends StatelessWidget {
       SettingsPageListItem(
         title: 'Help',
         icon: Icons.feedback,
+        onClick: () async {
+          Navigator.of(context).pushNamed(AboutView);
+        },
       ),
       SettingsPageListItem(
         title: 'Review',
         icon: Icons.rate_review,
-        onClick: () {
-          Navigator.of(context).pushNamed(ReviewView);
+        onClick: () async {
+          await packageUtils.writeReview(context);
+          // Navigator.of(context).pushNamed(ReviewView);
         },
       )
     ];

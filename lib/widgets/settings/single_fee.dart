@@ -39,7 +39,7 @@ class SingleFee extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    option.label,
+                    '${option.label} (%)',
                     style: TextStyle(
                       fontSize: 16.0,
                     ),

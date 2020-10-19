@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:stockcalculator/models/account_entity.dart';
+import 'package:stockcalculator/models/account_fee_model.dart';
 import 'package:stockcalculator/models/calculate_response_model.dart';
 import 'package:stockcalculator/models/fee_model.dart';
 import 'package:stockcalculator/utils/enums.dart';
@@ -88,7 +89,7 @@ class CalculateRequestModel {
     double sellTxAmt,
     CalculateResponseModel response,
   ) {
-    FeeModel accountFee = account.fees[tradeType];
+    AccountFeeModel accountFee = account.fees[tradeType];
     double brokerage = 0.0;
     if (accountFee.flat) {
       if (buyTxAmt.isNotEmpty()) {

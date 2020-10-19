@@ -57,6 +57,9 @@ class AccountFee extends StatelessWidget {
                     (option) {
                       Map<String, dynamic> fees = controllers[option.value];
                       bool isFlatFee = fees['flat'] as bool;
+                      Map<String, TextEditingController>
+                          clearingFeeControllers = fees['clearingFee']
+                              as Map<String, TextEditingController>;
                       return [
                         feeWidgetUtils.buildHeader(
                             context: context, title: option.label),
@@ -79,10 +82,36 @@ class AccountFee extends StatelessWidget {
                           ),
                           _buildFeeRow(
                             context: context,
-                            label: 'Maximum Fee',
+                            label: 'Maximum Fee (₹)',
                             controller: fees['max'] as TextEditingController,
                           ),
-                        ]
+                        ],
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          height: 35.0,
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Clearing Fees',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: Theme.of(context).accentColor,
+                            ),
+                          ),
+                        ),
+                        _buildFeeRow(
+                          context: context,
+                          label: 'NSE (%)',
+                          controller:
+                              clearingFeeControllers[TradeExchange.NSE.name],
+                          padding: EdgeInsets.only(left: 24.0, right: 16.0),
+                        ),
+                        _buildFeeRow(
+                          context: context,
+                          label: 'BSE (%)',
+                          controller:
+                              clearingFeeControllers[TradeExchange.BSE.name],
+                          padding: EdgeInsets.only(left: 24.0, right: 16.0),
+                        ),
                       ];
                     },
                   )
@@ -99,10 +128,11 @@ class AccountFee extends StatelessWidget {
     BuildContext context,
     TextEditingController controller,
     String label,
+    EdgeInsets padding = const EdgeInsets.symmetric(horizontal: 16.0),
   }) {
     return Container(
       height: _rowHeight,
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      padding: padding,
       child: Row(
         children: [
           Expanded(

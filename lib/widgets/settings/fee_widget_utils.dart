@@ -25,16 +25,22 @@ Widget buildHeader({BuildContext context, String title}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Container(
-        height: 20,
+      // Container(
+      //   height: 10,
+      // ),
+      Divider(
+        height: 4.0,
+        thickness: 1.0,
       ),
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+        alignment: Alignment.center,
         child: Text(
           title,
           style: TextStyle(
             fontWeight: FontWeight.w500,
             fontFamily: Constants.HEADING_FONT,
+            fontSize: 16.0,
             color: Theme.of(context).accentColor,
           ),
         ),

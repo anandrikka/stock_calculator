@@ -6,6 +6,7 @@ import 'package:stockcalculator/models/option.dart';
 import 'package:stockcalculator/providers/account_provider.dart';
 import 'package:stockcalculator/providers/app_user_config_provider.dart';
 import 'package:stockcalculator/providers/fee_config_provider.dart';
+import 'package:stockcalculator/screens/about_screen.dart';
 import 'package:stockcalculator/utils/enum_lists.dart';
 import 'package:stockcalculator/utils/enums.dart';
 import 'package:stockcalculator/widgets/common/choose_alert_dialog.dart';
@@ -98,7 +99,14 @@ class _HomePageState extends State<CalculatorScreen> {
               Icons.help,
               color: Colors.white,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AboutScreen(),
+                ),
+              );
+            },
           )
         ],
       ),

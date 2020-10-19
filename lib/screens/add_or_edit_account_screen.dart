@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:stockcalculator/models/account_entity.dart';
-import 'package:stockcalculator/models/fee_model.dart';
+import 'package:stockcalculator/models/account_fee_model.dart';
 import 'package:stockcalculator/providers/account_provider.dart';
 import 'package:stockcalculator/screens/account_management_screen.dart';
 import 'package:stockcalculator/utils/alerts.dart' as alertUtils;
@@ -48,6 +48,14 @@ class _AccountScreenState extends State<AddOrEditAccountScreen> {
             text: value.flatRate.toString(),
           ),
           'flat': value.flat,
+          'clearingFee': {
+            TradeExchange.NSE.name: TextEditingController(
+              text: value.clearingFee.nse.toStringSafe(),
+            ),
+            TradeExchange.BSE.name: TextEditingController(
+              text: value.clearingFee.bse.toStringSafe(),
+            ),
+          }
         },
       ),
     );
@@ -149,6 +157,9 @@ class _AccountScreenState extends State<AddOrEditAccountScreen> {
         var percent = 0.0;
         var min = 0.0;
         var max = 0.0;
+        var clearingFee = (value['clearingFee']
+                as Map<String, TextEditingController>)
+            .map((key, value) => MapEntry(key, value.text.convertToDouble()));
         if (flat) {
           flatRate = (value['flatRate'] as TextEditingController)
               .text
@@ -160,12 +171,16 @@ class _AccountScreenState extends State<AddOrEditAccountScreen> {
           min = (value['min'] as TextEditingController).text.convertToDouble();
           max = (value['max'] as TextEditingController).text.convertToDouble();
         }
-        FeeModel fee = FeeModel(
+        AccountFeeModel fee = AccountFeeModel(
           flat: flat,
           flatRate: flatRate,
           min: min,
           max: max,
           percent: percent,
+          clearingFee: ClearingFee(
+            nse: clearingFee['NSE'],
+            bse: clearingFee['BSE'],
+          ),
         );
         return MapEntry(key, fee);
       },

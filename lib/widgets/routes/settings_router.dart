@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stockcalculator/screens/about_screen.dart';
 import 'package:stockcalculator/screens/account_management_screen.dart';
 import 'package:stockcalculator/screens/add_or_edit_account_screen.dart';
 import 'package:stockcalculator/screens/buy_and_sell_fee_screen.dart';
@@ -47,7 +48,8 @@ class _SettingsRouterState extends State<SettingsRouter> {
       ClearingChargesView: (ctx) => DefaultFeesPage(title: 'Clearning Charges'),
       BackupView: (ctx) => DummyView(title: 'Backup'),
       AddOrEditAccountView: (ctx) => AddOrEditAccountScreen(),
-      ReviewView: (ctx) => ReviewOptionsScreen()
+      ReviewView: (ctx) => ReviewOptionsScreen(),
+      AboutView: (ctx) => AboutScreen()
     };
   }
 
