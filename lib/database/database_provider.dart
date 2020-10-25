@@ -22,7 +22,7 @@ class DatabaseProvider {
   }
 
   _initDatabase() async {
-    await Sqflite.setDebugModeOn();
+    // await Sqflite.setDebugModeOn();
     Directory dataDir = await getApplicationDocumentsDirectory();
     String dbPath = join(dataDir.path, _dbName);
     return await openDatabase(

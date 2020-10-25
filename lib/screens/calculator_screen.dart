@@ -131,12 +131,12 @@ class _HomePageState extends State<CalculatorScreen> {
                               sellPrice:
                                   _sellPriceControl.text.convertToDouble(),
                               quantity: _quantityControl.text.convertToDouble(),
-                              strikePrice: _tradeType.isOptions ||
-                                      _tradeType.isFutures
+                              strikePrice: _tradeType.isOptions &&
+                                      !_tradeType.isEquity
                                   ? _strikePriceControl.text.convertToDouble()
                                   : 0.0,
                               lotSize:
-                                  _tradeType.isOptions || _tradeType.isFutures
+                                  _tradeType.isOptions && !_tradeType.isEquity
                                       ? _lotSizeControl.text.convertToDouble()
                                       : 1.0,
                               fees: _feeConfig,
@@ -225,9 +225,7 @@ class _HomePageState extends State<CalculatorScreen> {
   }
 
   Row _buildBuyPriceSellPriceAndStrikePrice(context) {
-    var showStrikePrice =
-        (_tradeType.isCommodityType || _tradeType.isCurrencyType) &&
-            _tradeType.isOptions;
+    var showStrikePrice = _tradeType.isOptions && !_tradeType.isEquity;
     return Row(
       children: <Widget>[
         if (showStrikePrice) ...[
@@ -292,7 +290,7 @@ class _HomePageState extends State<CalculatorScreen> {
           child: _buildInputField(
             context: context,
             // hint: '400',
-            label: _tradeType.isFutures || _tradeType.isOptions
+            label: _tradeType.isOptions && !_tradeType.isEquity
                 ? 'Total Lots'
                 : 'Quantity',
             textAlign: TextAlign.right,
@@ -329,7 +327,7 @@ class _HomePageState extends State<CalculatorScreen> {
         SizedBox(
           width: 10,
         ),
-        if (_tradeType.isOptions || _tradeType.isFutures) ...[
+        if (_tradeType.isOptions && !_tradeType.isEquity) ...[
           Expanded(
             child: _buildInputField(
               context: context,
@@ -343,8 +341,7 @@ class _HomePageState extends State<CalculatorScreen> {
                 signed: false,
               ),
               validator: (String value) {
-                if ((_tradeType.isOptions || _tradeType.isFutures) &&
-                    value.isEmpty) return '';
+                if ((_tradeType.isOptions) && value.isEmpty) return '';
                 return null;
               },
             ),
