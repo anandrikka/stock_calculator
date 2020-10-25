@@ -68,8 +68,8 @@ public class InAppReviewPlugin implements FlutterPlugin, MethodCallHandler, Acti
 
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-        Log.i(TAG, "onMethodCall: " + call.method);
-        System.out.println("From Android class1: " + call.method);
+//        Log.i(TAG, "onMethodCall: " + call.method);
+//        System.out.println("From Android class1: " + call.method);
         if (call.method.equals("requestReview")) {
             requestReview(result);
         } else if (call.method.equals("isRequestReviewAvailable")) {
@@ -122,7 +122,7 @@ public class InAppReviewPlugin implements FlutterPlugin, MethodCallHandler, Acti
             context.getPackageManager().getPackageInfo("com.android.vending", 0);
             return true;
         } catch (PackageManager.NameNotFoundException e) {
-            Log.i(TAG, "playstore not installed");
+//            Log.i(TAG, "playstore not installed");
             return false;
         }
     }
@@ -130,8 +130,8 @@ public class InAppReviewPlugin implements FlutterPlugin, MethodCallHandler, Acti
     private void isInAppReviewCompatible(final Result result) {
         final boolean isPlayStoreInstalled = isPlayStoreInstalled();
         final boolean isCompatibleVersion = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-        Log.i(TAG, "isPlayStoreInstalled: " + isPlayStoreInstalled);
-        Log.i(TAG, "isCompatibleVersion: " + isCompatibleVersion);
+//        Log.i(TAG, "isPlayStoreInstalled: " + isPlayStoreInstalled);
+//        Log.i(TAG, "isCompatibleVersion: " + isCompatibleVersion);
         if (!isCompatibleVersion || !isPlayStoreInstalled) {
             result.success(false);
             return;

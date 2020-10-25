@@ -5,6 +5,7 @@ import 'package:stockcalculator/screens/add_or_edit_account_screen.dart';
 import 'package:stockcalculator/screens/buy_and_sell_fee_screen.dart';
 import 'package:stockcalculator/screens/default_fees_page.dart';
 import 'package:stockcalculator/screens/exchange_fees_screen.dart';
+import 'package:stockcalculator/screens/gst_screen.dart';
 import 'package:stockcalculator/screens/review_options_screen.dart';
 import 'package:stockcalculator/screens/settings_landing_screen.dart';
 import 'package:stockcalculator/screens/single_fee_screen.dart';
@@ -33,10 +34,7 @@ class _SettingsRouterState extends State<SettingsRouter> {
           ),
       ExchangeTransactionsView: (ctx) =>
           ExchangeFeesScreen(title: 'Exchange Tx View'),
-      GSTView: (ctx) => SingleFeeScreen(
-            title: 'GST',
-            feeType: FeeType.GST,
-          ),
+      GSTView: (ctx) => GstScreen(),
       SEBIChargesView: (ctx) => SingleFeeScreen(
             title: 'SEBI',
             feeType: FeeType.SEBI,

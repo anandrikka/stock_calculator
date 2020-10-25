@@ -6,7 +6,6 @@ import 'package:stockcalculator/models/option.dart';
 import 'package:stockcalculator/providers/account_provider.dart';
 import 'package:stockcalculator/providers/app_user_config_provider.dart';
 import 'package:stockcalculator/providers/fee_config_provider.dart';
-import 'package:stockcalculator/screens/about_screen.dart';
 import 'package:stockcalculator/utils/enum_lists.dart';
 import 'package:stockcalculator/utils/enums.dart';
 import 'package:stockcalculator/widgets/common/choose_alert_dialog.dart';
@@ -27,8 +26,6 @@ class CalculatorScreen extends StatefulWidget {
 
 class _HomePageState extends State<CalculatorScreen> {
   var _formKey = GlobalKey<FormState>();
-  TextEditingController _tradeTypeControl = TextEditingController();
-  TextEditingController _exchangeControl = TextEditingController();
   TextEditingController _buyPriceControl = TextEditingController();
   TextEditingController _sellPriceControl = TextEditingController();
   TextEditingController _quantityControl = TextEditingController();
@@ -50,6 +47,7 @@ class _HomePageState extends State<CalculatorScreen> {
   Map<FeeType, Map<TradingOption, dynamic>> _feeConfig;
   bool _useMultipleAccounts = false;
   bool _showResult = false;
+  double _gst = 0.0;
 
   _setUserPrefs() {
     AppUserConfigProvider appUserConfigProvider =
@@ -60,18 +58,15 @@ class _HomePageState extends State<CalculatorScreen> {
         Provider.of<FeeConfigProvider>(context, listen: true);
     Map<UserPreference, dynamic> userConfig = appUserConfigProvider.userConfig;
     _accounts = accountProvider.accounts;
-    _feeConfig =
-        Provider.of<FeeConfigProvider>(context, listen: true).feeConfig;
+    _feeConfig = feeConfigProvider.feeConfig;
+    _gst = feeConfigProvider.gst;
     _tradeType =
         userConfig[UserPreference.DEFAULT_TRADING_OPTION] as TradingOption;
     _exchange = userConfig[UserPreference.DEFAULT_EXCHANGE] as TradeExchange;
     _defaultAccount = userConfig[UserPreference.DEFAULT_ACCOUNT] as int;
     _useMultipleAccounts =
         userConfig[UserPreference.USE_MULTIPLE_ACCOUNTS] as bool;
-    _hasPrefsBeenSet = appUserConfigProvider.loaded &&
-        accountProvider.loaded &&
-        feeConfigProvider.loaded;
-    print('_hasPrefsBeenSet: ' + _hasPrefsBeenSet.toString());
+    _hasPrefsBeenSet = appUserConfigProvider.loaded && feeConfigProvider.loaded;
   }
 
   @override
@@ -94,20 +89,20 @@ class _HomePageState extends State<CalculatorScreen> {
           widget.title,
         ),
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.help,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AboutScreen(),
-                ),
-              );
-            },
-          )
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.help,
+          //     color: Colors.white,
+          //   ),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => AboutScreen(),
+          //       ),
+          //     );
+          //   },
+          // )
         ],
       ),
       body: SingleChildScrollView(
@@ -136,14 +131,20 @@ class _HomePageState extends State<CalculatorScreen> {
                               sellPrice:
                                   _sellPriceControl.text.convertToDouble(),
                               quantity: _quantityControl.text.convertToDouble(),
-                              strikePrice:
-                                  _strikePriceControl.text.convertToDouble(),
-                              lotSize: _lotSizeControl.text.convertToDouble(),
+                              strikePrice: _tradeType.isOptions ||
+                                      _tradeType.isFutures
+                                  ? _strikePriceControl.text.convertToDouble()
+                                  : 0.0,
+                              lotSize:
+                                  _tradeType.isOptions || _tradeType.isFutures
+                                      ? _lotSizeControl.text.convertToDouble()
+                                      : 1.0,
                               fees: _feeConfig,
                               account: _accounts.firstWhere(
                                 (account) => account.id == _defaultAccount,
                                 orElse: () => AccountEntity.create(),
                               ),
+                              gst: _gst,
                             );
                             return CalculateResults(
                               inputs: calcModel,
@@ -177,6 +178,11 @@ class _HomePageState extends State<CalculatorScreen> {
         if (null != selectedVal) {
           setState(() {
             _tradeType = selectedVal;
+            _buyPriceControl.clear();
+            _sellPriceControl.clear();
+            _quantityControl.clear();
+            _lotSizeControl.value = TextEditingValue(text: '1000');
+            _strikePriceControl.clear();
           });
         }
       },
@@ -296,22 +302,25 @@ class _HomePageState extends State<CalculatorScreen> {
               if (value.isEmpty) return '';
               return null;
             },
-            suffix: InkWell(
-              autofocus: false,
-              onTap: () async {
-                int quantity = await showDialog(
-                  context: context,
-                  builder: (_) => EstimateQuantity(),
-                );
-                if (null != quantity) {
-                  _quantityControl.text = quantity.toString();
-                }
-              },
-              child: Icon(
-                Icons.calculate,
-                color: Theme.of(context).accentColor,
-              ),
-            ),
+            suffix: !_tradeType.isOptions && !_tradeType.isFutures
+                ? InkWell(
+                    autofocus: false,
+                    onTap: () async {
+                      int quantity = await showDialog(
+                        context: context,
+                        builder: (_) => EstimateQuantity(),
+                      );
+                      if (null != quantity) {
+                        _quantityControl.text = quantity.toString();
+                      }
+                    },
+                    child: Icon(
+                      Icons.calculate,
+                      color: Theme.of(context).accentColor,
+                    ),
+                  )
+                : null,
+
             onFieldSubmitted: (_) {
               calculate();
             },
@@ -389,6 +398,11 @@ class _HomePageState extends State<CalculatorScreen> {
         ),
         Builder(
           builder: (context) => ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                (_) => Theme.of(context).primaryColor,
+              ),
+            ),
             child: Text('Calculate'),
             onPressed: () => calculate(),
           ),

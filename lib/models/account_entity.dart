@@ -13,7 +13,7 @@ class AccountEntity {
 
   int id;
   String accountName;
-  int isActive;
+  int isActive = 1;
   Map<TradingOption, AccountFeeModel> fees;
   double dpFee;
 
@@ -66,6 +66,9 @@ class AccountEntity {
       TradingOption.COMMODITIES_FUTURES: AccountFeeModel(),
       TradingOption.COMMODITIES_OPTIONS: AccountFeeModel(),
     };
+    var temp = jsonEncode(accountEntity.fees
+        .map((key, value) => MapEntry(key.value, value.toJson())));
+    print(temp);
     return accountEntity;
   }
 }

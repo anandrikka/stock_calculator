@@ -44,7 +44,7 @@ class ViewAccountFees extends StatelessWidget {
                       'No Fee Applicable',
                     ),
                   )
-                else if (fee.flat)
+                else if (fee.flatFee.flag)
                   ListTile(
                     // dense: true,
                     title: Text('Flat Rate'),

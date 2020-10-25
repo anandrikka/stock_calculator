@@ -215,13 +215,13 @@ class SettingsLandingScreen extends StatelessWidget {
       //     Navigator.of(context).pushNamed(BackupView);
       //   },
       // ),
-      SettingsPageListItem(
-        title: 'Help',
-        icon: Icons.feedback,
-        onClick: () async {
-          Navigator.of(context).pushNamed(AboutView);
-        },
-      ),
+      // SettingsPageListItem(
+      //   title: 'Help',
+      //   icon: Icons.feedback,
+      //   onClick: () async {
+      //     Navigator.of(context).pushNamed(AboutView);
+      //   },
+      // ),
       SettingsPageListItem(
         title: 'Review',
         icon: Icons.rate_review,

@@ -70,6 +70,11 @@ class _EstimateQuantityState extends State<EstimateQuantity> {
         ),
         ElevatedButton(
           onPressed: _estimateQuantity,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.resolveWith<Color>(
+              (_) => Theme.of(context).primaryColor,
+            ),
+          ),
           child: Text('Estimate'),
         )
       ],

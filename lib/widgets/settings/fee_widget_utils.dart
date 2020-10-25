@@ -124,6 +124,7 @@ Widget buildTextInput({
   bool isLast = false,
   BuildContext context,
   bool editMode,
+  String initialValue,
 }) {
   return TextFormField(
     style: TextStyle(
@@ -137,12 +138,9 @@ Widget buildTextInput({
     textAlign: TextAlign.right,
     readOnly: !editMode,
     controller: controller,
+    initialValue: initialValue,
     decoration: InputDecoration(
       isDense: true,
-      // suffixText: suffix,
-      // suffixStyle: TextStyle(
-      //   color: Theme.of(context).accentColor,
-      // ),
       hintText: '0.0',
       border: OutlineInputBorder(
         borderSide: BorderSide(width: 1.0),
@@ -150,7 +148,7 @@ Widget buildTextInput({
           Radius.circular(5.0),
         ),
       ),
-      contentPadding: EdgeInsets.all(10.0),
+      contentPadding: EdgeInsets.all(12.0),
     ),
   );
 }

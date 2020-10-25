@@ -88,6 +88,7 @@ extension TradingOptionsExtension on TradingOption {
   bool get isOptions => type == 'OPTIONS';
   bool get isCurrencyType => group == 'CURRENCY';
   bool get isCommodityType => group == 'COMMODITIES';
+  String get circularAvatarText => group.substring(0, 1) + type.substring(0, 1);
 }
 
 extension TabItemExtension on TabItem {
