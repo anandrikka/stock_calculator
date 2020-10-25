@@ -76,9 +76,9 @@ class CalculateRequestModel {
           response.totalTaxesAndCharges;
     }
 
-    if (tradeType == TradingOption.EQUITY_DELIVERY) {
-      response.dp = dpCharges;
-    }
+    // if (tradeType == TradingOption.EQUITY_DELIVERY) {
+    //   response.dp = dpCharges;
+    // }
 
     response.breakEvenPoints = calculateBreakEven();
 
