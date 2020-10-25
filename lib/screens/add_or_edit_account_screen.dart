@@ -31,7 +31,6 @@ class _AccountScreenState extends State<AddOrEditAccountScreen> {
   AccountRepository _accRepo = AccountRepository();
   String _mode;
   AccountEntity _acc;
-  Map<TradingOption, Map<String, dynamic>> _controllers;
   bool _edit = false;
 
   bool get isNew => _mode == AccountManagementScreen.MODE_ADD;

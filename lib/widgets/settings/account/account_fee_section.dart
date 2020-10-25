@@ -25,7 +25,6 @@ class AccountFeeSection extends StatefulWidget {
 }
 
 class _AccountFeeSectionState extends State<AccountFeeSection> {
-  bool _hide = true;
   @override
   Widget build(BuildContext context) {
     return Column(

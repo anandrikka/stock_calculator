@@ -193,15 +193,14 @@ class CalculateRequestModel {
       strikeTxBuyAmt: strikeTxBuyAmt,
     );
     double sellPrice = (totalBuyCharges + buyTxAmt) / (quantity * lotSize);
-    double dp = 0.0;
-    if (tradeType == TradingOption.EQUITY_DELIVERY) {
-      dp = dpCharges;
-    }
+    // double dp = 0.0;
+    // if (tradeType == TradingOption.EQUITY_DELIVERY) {
+    //   dp = dpCharges;
+    // }
     while (true) {
       double sellTxAmt = sellPrice * lotSize * quantity;
       double totalSellCharges = calculateTotalCharges(0.0, sellTxAmt,
-              strikeTxSellAmt: strikeTxSellAmt) +
-          dpCharges;
+          strikeTxSellAmt: strikeTxSellAmt);
       double profitOrLoss =
           sellTxAmt - buyTxAmt - totalBuyCharges - totalSellCharges;
       if (profitOrLoss < -5) {
