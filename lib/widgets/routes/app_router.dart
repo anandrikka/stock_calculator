@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stock_calculator/providers/account_provider.dart';
-import 'package:stock_calculator/providers/app_user_config_provider.dart';
-import 'package:stock_calculator/providers/fee_config_provider.dart';
-import 'package:stock_calculator/screens/calculator_screen.dart';
-import 'package:stock_calculator/utils/enums.dart';
-import 'package:stock_calculator/widgets/common/flutter_icons.dart';
-import 'package:stock_calculator/widgets/routes/settings_router.dart';
+import 'package:stockcalculator/providers/account_provider.dart';
+import 'package:stockcalculator/providers/app_user_config_provider.dart';
+import 'package:stockcalculator/providers/fee_config_provider.dart';
+import 'package:stockcalculator/screens/calculator_screen.dart';
+import 'package:stockcalculator/utils/enums.dart';
+import 'package:stockcalculator/widgets/common/flutter_icons.dart';
+import 'package:stockcalculator/widgets/routes/settings_router.dart';
 
 class AppRouter extends StatefulWidget {
   @override
@@ -126,7 +126,8 @@ class _AppState extends State<AppRouter> {
 
   BottomNavigationBarItem _buildNavItem({TabItem tabItem}) {
     return BottomNavigationBarItem(
-        icon: Icon(_navItems[tabItem]['icon']),
-        title: Text(_navItems[tabItem]['title']));
+      icon: Icon(_navItems[tabItem]['icon']),
+      label: _navItems[tabItem]['title'],
+    );
   }
 }

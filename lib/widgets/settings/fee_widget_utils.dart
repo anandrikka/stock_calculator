@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stock_calculator/models/option.dart';
-import 'package:stock_calculator/utils/constants.dart';
-import 'package:stock_calculator/utils/enums.dart';
+import 'package:stockcalculator/models/option.dart';
+import 'package:stockcalculator/utils/constants.dart';
+import 'package:stockcalculator/utils/enums.dart';
 
 final double widthFactor = 1 / 3;
 
@@ -25,16 +25,22 @@ Widget buildHeader({BuildContext context, String title}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Container(
-        height: 20,
+      // Container(
+      //   height: 10,
+      // ),
+      Divider(
+        height: 4.0,
+        thickness: 1.0,
       ),
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+        alignment: Alignment.center,
         child: Text(
           title,
           style: TextStyle(
             fontWeight: FontWeight.w500,
             fontFamily: Constants.HEADING_FONT,
+            fontSize: 16.0,
             color: Theme.of(context).accentColor,
           ),
         ),
@@ -47,7 +53,6 @@ Widget buildFeeInputValue({
   BuildContext context,
   TextEditingController controller,
   double widthFactor = 1 / 3,
-  suffix = '%',
 }) {
   final double width = MediaQuery.of(context).size.width * widthFactor;
   final EdgeInsets margin =
@@ -56,7 +61,7 @@ Widget buildFeeInputValue({
     width: width,
     margin: margin,
     child: Text(
-      null != controller.value ? '${controller.value.text}$suffix' : '',
+      null != controller.value ? '${controller.value.text}' : '',
       style: TextStyle(
         fontSize: 18.0,
         fontFamily: Constants.FIXED_FONT,
@@ -119,7 +124,7 @@ Widget buildTextInput({
   bool isLast = false,
   BuildContext context,
   bool editMode,
-  String suffix = '%',
+  String initialValue,
 }) {
   return TextFormField(
     style: TextStyle(
@@ -133,12 +138,9 @@ Widget buildTextInput({
     textAlign: TextAlign.right,
     readOnly: !editMode,
     controller: controller,
+    initialValue: initialValue,
     decoration: InputDecoration(
       isDense: true,
-      suffixText: suffix,
-      suffixStyle: TextStyle(
-        color: Theme.of(context).accentColor,
-      ),
       hintText: '0.0',
       border: OutlineInputBorder(
         borderSide: BorderSide(width: 1.0),
@@ -146,7 +148,7 @@ Widget buildTextInput({
           Radius.circular(5.0),
         ),
       ),
-      contentPadding: EdgeInsets.all(10.0),
+      contentPadding: EdgeInsets.all(12.0),
     ),
   );
 }

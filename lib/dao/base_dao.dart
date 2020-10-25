@@ -1,4 +1,4 @@
-import 'package:stock_calculator/database/database_provider.dart';
+import 'package:stockcalculator/database/database_provider.dart';
 
 abstract class BaseDao<K, T> {
   DatabaseProvider dbProvider = DatabaseProvider.dbProvider;

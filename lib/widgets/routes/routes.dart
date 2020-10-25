@@ -9,3 +9,5 @@ const String ClearingChargesView = '/settings/clearning_charges';
 const String BackupView = '/settings/backup';
 const String AccountsManagementView = '/settings/accounts';
 const String AddOrEditAccountView = '/settings/accounts/addOrEdit';
+const String ReviewView = '/settings/reviews';
+const String AboutView = '/settings/about';

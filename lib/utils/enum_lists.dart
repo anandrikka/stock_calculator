@@ -1,5 +1,5 @@
-import 'package:stock_calculator/models/option.dart';
-import 'package:stock_calculator/utils/enums.dart';
+import 'package:stockcalculator/models/option.dart';
+import 'package:stockcalculator/utils/enums.dart';
 
 class EnumsAsList {
   static List<Option<TradingOption>> getTradingOptions() => TradingOption.values

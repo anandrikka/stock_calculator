@@ -1,6 +1,4 @@
-import 'dart:ffi';
-
-import 'package:stock_calculator/utils/constants.dart';
+import 'package:stockcalculator/utils/constants.dart';
 
 enum TradingOption {
   EQUITY_DELIVERY,
@@ -86,6 +84,11 @@ extension TradingOptionsExtension on TradingOption {
   String get typeLabel => type.toLowerCase().capitalize();
   String get label =>
       '${group.toLowerCase().capitalize()} - ${type.toLowerCase().capitalize()}';
+  bool get isFutures => type == 'FUTURES';
+  bool get isOptions => type == 'OPTIONS';
+  bool get isCurrencyType => group == 'CURRENCY';
+  bool get isCommodityType => group == 'COMMODITIES';
+  String get circularAvatarText => group.substring(0, 1) + type.substring(0, 1);
 }
 
 extension TabItemExtension on TabItem {

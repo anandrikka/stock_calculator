@@ -1,4 +1,4 @@
-# stock_calculator
+# stockcalculator
 
 Stock Calculator
 

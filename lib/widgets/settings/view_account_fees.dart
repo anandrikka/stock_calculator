@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:stock_calculator/models/account_entity.dart';
-import 'package:stock_calculator/models/option.dart';
-import 'package:stock_calculator/utils/enum_lists.dart';
-import 'package:stock_calculator/utils/enums.dart';
+import 'package:stockcalculator/models/account_entity.dart';
+import 'package:stockcalculator/models/option.dart';
+import 'package:stockcalculator/utils/enum_lists.dart';
+import 'package:stockcalculator/utils/enums.dart';
 
 class ViewAccountFees extends StatelessWidget {
   final AccountEntity accountEntity;
@@ -44,7 +44,7 @@ class ViewAccountFees extends StatelessWidget {
                       'No Fee Applicable',
                     ),
                   )
-                else if (fee.flat)
+                else if (fee.flatFee.flag)
                   ListTile(
                     // dense: true,
                     title: Text('Flat Rate'),

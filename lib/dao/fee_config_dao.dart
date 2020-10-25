@@ -1,5 +1,5 @@
-import 'package:stock_calculator/dao/base_dao.dart';
-import 'package:stock_calculator/models/fee_config_entity.dart';
+import 'package:stockcalculator/dao/base_dao.dart';
+import 'package:stockcalculator/models/fee_config_entity.dart';
 
 class FeeConfigDao extends BaseDao<String, FeeConfigEntity> {
   @override

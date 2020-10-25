@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stock_calculator/models/option.dart';
-import 'package:stock_calculator/providers/account_provider.dart';
-import 'package:stock_calculator/providers/app_user_config_provider.dart';
-import 'package:stock_calculator/utils/enum_lists.dart';
-import 'package:stock_calculator/utils/enums.dart';
-import 'package:stock_calculator/widgets/common/choose_alert_dialog.dart';
-import 'package:stock_calculator/widgets/common/flutter_icons.dart';
-import 'package:stock_calculator/widgets/routes/routes.dart';
-import 'package:stock_calculator/widgets/settings/settings_page_list_item.dart';
+import 'package:stockcalculator/models/option.dart';
+import 'package:stockcalculator/providers/account_provider.dart';
+import 'package:stockcalculator/providers/app_user_config_provider.dart';
+import 'package:stockcalculator/utils/app_utils.dart' as packageUtils;
+import 'package:stockcalculator/utils/enum_lists.dart';
+import 'package:stockcalculator/utils/enums.dart';
+import 'package:stockcalculator/widgets/common/choose_alert_dialog.dart';
+import 'package:stockcalculator/widgets/common/flutter_icons.dart';
+import 'package:stockcalculator/widgets/routes/routes.dart';
+import 'package:stockcalculator/widgets/settings/settings_page_list_item.dart';
 
 class SettingsLandingScreen extends StatelessWidget {
   final String title;
@@ -40,7 +41,6 @@ class SettingsLandingScreen extends StatelessWidget {
           ..._buildAccountsManagement(context),
           ..._buildManageTaxesCharges(context),
           ..._buildSettings(context),
-          ..._appSettings(context),
         ],
       ),
     );
@@ -208,25 +208,27 @@ class SettingsLandingScreen extends StatelessWidget {
   List<Widget> _buildSettings(context) {
     return [
       SettingsPageListItem(header: true, title: 'Settings'),
+      // SettingsPageListItem(
+      //   title: 'Backup',
+      //   icon: Icons.cloud_upload,
+      //   onClick: () {
+      //     Navigator.of(context).pushNamed(BackupView);
+      //   },
+      // ),
+      // SettingsPageListItem(
+      //   title: 'Help',
+      //   icon: Icons.feedback,
+      //   onClick: () async {
+      //     Navigator.of(context).pushNamed(AboutView);
+      //   },
+      // ),
       SettingsPageListItem(
-        title: 'Backup',
-        icon: Icons.cloud_upload,
-        onClick: () {
-          Navigator.of(context).pushNamed(BackupView);
-        },
-      )
-    ];
-  }
-
-  List<Widget> _appSettings(context) {
-    return [
-      SettingsPageListItem(
-        title: 'Help',
-        icon: Icons.feedback,
-      ),
-      SettingsPageListItem(
-        title: 'review',
+        title: 'Review',
         icon: Icons.rate_review,
+        onClick: () async {
+          await packageUtils.writeReview(context);
+          // Navigator.of(context).pushNamed(ReviewView);
+        },
       )
     ];
   }

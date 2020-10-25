@@ -1,7 +1,8 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:stock_calculator/dao/account_dao.dart';
-import 'package:stock_calculator/models/account_entity.dart';
-import 'package:stock_calculator/repo/base_repository.dart';
+import 'package:stockcalculator/dao/account_dao.dart';
+import 'package:stockcalculator/models/account_entity.dart';
+import 'package:stockcalculator/models/option.dart';
+import 'package:stockcalculator/repo/base_repository.dart';
 
 class AccountRepository extends BaseRepository<int, AccountEntity> {
   final AccountDao _accountDao = AccountDao();
@@ -38,5 +39,13 @@ class AccountRepository extends BaseRepository<int, AccountEntity> {
 
   Future<List<AccountEntity>> getAllActiveAccounts() async {
     return _accountDao.getAllActiveAccounts();
+  }
+
+  Future<List<Option<int>>> getActiveAccountsByAccountName() async {
+    return _accountDao.getAllActiveAccountsByName();
+  }
+
+  removeAccount(int id) async {
+    await _accountDao.removeAccount(id);
   }
 }

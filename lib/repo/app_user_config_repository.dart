@@ -1,6 +1,6 @@
-import 'package:stock_calculator/dao/app_user_config_dao.dart';
-import 'package:stock_calculator/models/app_user_config_entity.dart';
-import 'package:stock_calculator/repo/base_repository.dart';
+import 'package:stockcalculator/dao/app_user_config_dao.dart';
+import 'package:stockcalculator/models/app_user_config_entity.dart';
+import 'package:stockcalculator/repo/base_repository.dart';
 
 class AppUserConfigRepository
     extends BaseRepository<String, AppUserConfigEntity> {
@@ -21,6 +21,7 @@ class AppUserConfigRepository
   }
 
   @override
+  // ignore: missing_return
   create(t) {
     _appUserConfigDao.create(t);
   }

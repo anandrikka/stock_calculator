@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stock_calculator/providers/fee_config_provider.dart';
-import 'package:stock_calculator/widgets/settings/buy_and_sell_fee.dart';
+import 'package:stockcalculator/providers/fee_config_provider.dart';
+import 'package:stockcalculator/widgets/settings/buy_and_sell_fee.dart';
 
 class DefaultFeesPage extends StatelessWidget {
   final String title;

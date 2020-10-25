@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stock_calculator/models/option.dart';
+import 'package:stockcalculator/models/option.dart';
 
 class ChooseAlertDialog<T> extends StatelessWidget {
   final List<Option<T>> options;

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:stock_calculator/models/fee_model.dart';
-import 'package:stock_calculator/utils/enums.dart';
+import 'package:stockcalculator/models/account_fee_model.dart';
+import 'package:stockcalculator/utils/enums.dart';
 
 class AccountEntity {
   static const String TABLE = 'ACCOUNT';
@@ -13,8 +13,8 @@ class AccountEntity {
 
   int id;
   String accountName;
-  int isActive;
-  Map<TradingOption, FeeModel> fees;
+  int isActive = 1;
+  Map<TradingOption, AccountFeeModel> fees;
   double dpFee;
 
   AccountEntity();
@@ -46,26 +46,29 @@ class AccountEntity {
         dpFee = json[COLUMN_DP_FEE] as double,
         fees = constructFees(json[COLUMN_FEES_JSON] as String);
 
-  static Map<TradingOption, FeeModel> constructFees(String json) =>
+  static Map<TradingOption, AccountFeeModel> constructFees(String json) =>
       (jsonDecode(json) as Map<String, dynamic>).map(
         (key, value) => MapEntry(
           key.convertToTradingOption(),
-          FeeModel.fromJson(value as Map<String, dynamic>),
+          AccountFeeModel.fromJson(value as Map<String, dynamic>),
         ),
       );
 
   static AccountEntity create() {
     var accountEntity = AccountEntity();
     accountEntity.fees = {
-      TradingOption.EQUITY_DELIVERY: FeeModel(),
-      TradingOption.EQUITY_INTRADAY: FeeModel(),
-      TradingOption.EQUITY_FUTURES: FeeModel(),
-      TradingOption.EQUITY_OPTIONS: FeeModel(),
-      TradingOption.CURRENCY_FUTURES: FeeModel(),
-      TradingOption.CURRENCY_OPTIONS: FeeModel(),
-      TradingOption.COMMODITIES_FUTURES: FeeModel(),
-      TradingOption.COMMODITIES_OPTIONS: FeeModel(),
+      TradingOption.EQUITY_DELIVERY: AccountFeeModel(),
+      TradingOption.EQUITY_INTRADAY: AccountFeeModel(),
+      TradingOption.EQUITY_FUTURES: AccountFeeModel(),
+      TradingOption.EQUITY_OPTIONS: AccountFeeModel(),
+      TradingOption.CURRENCY_FUTURES: AccountFeeModel(),
+      TradingOption.CURRENCY_OPTIONS: AccountFeeModel(),
+      TradingOption.COMMODITIES_FUTURES: AccountFeeModel(),
+      TradingOption.COMMODITIES_OPTIONS: AccountFeeModel(),
     };
+    var temp = jsonEncode(accountEntity.fees
+        .map((key, value) => MapEntry(key.value, value.toJson())));
+    print(temp);
     return accountEntity;
   }
 }

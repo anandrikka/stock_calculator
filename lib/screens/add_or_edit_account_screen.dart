@@ -1,75 +1,94 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:stock_calculator/models/account_entity.dart';
-import 'package:stock_calculator/models/fee_model.dart';
-import 'package:stock_calculator/providers/account_provider.dart';
-import 'package:stock_calculator/screens/account_management_screen.dart';
-import 'package:stock_calculator/utils/alerts.dart' as alertUtils;
-import 'package:stock_calculator/utils/enums.dart';
-import 'package:stock_calculator/widgets/settings/account_fee.dart';
+import 'package:stockcalculator/models/account_entity.dart';
+import 'package:stockcalculator/models/account_fee_model.dart';
+import 'package:stockcalculator/providers/account_provider.dart';
+import 'package:stockcalculator/repo/account_repository.dart';
+import 'package:stockcalculator/screens/account_management_screen.dart';
+import 'package:stockcalculator/utils/alerts.dart';
+import 'package:stockcalculator/utils/enum_lists.dart';
+import 'package:stockcalculator/utils/enums.dart';
+import 'package:stockcalculator/widgets/common/loader.dart';
+import 'package:stockcalculator/widgets/settings/account/account_fee_section.dart';
+import 'package:stockcalculator/widgets/settings/account/account_text_form_field.dart';
 
 class AddOrEditAccountScreen extends StatefulWidget {
   @override
   _AccountScreenState createState() => _AccountScreenState();
 }
 
+class ExpandableItem {
+  bool expanded;
+  final TradingOption tradingOption;
+  final String header;
+  ExpandableItem(this.expanded, this.tradingOption, this.header);
+}
+
 class _AccountScreenState extends State<AddOrEditAccountScreen> {
   GlobalKey _key = GlobalKey();
+  GlobalKey<FormState> _formKey = GlobalKey();
+  AccountRepository _accRepo = AccountRepository();
   String _mode;
   AccountEntity _acc;
   Map<TradingOption, Map<String, dynamic>> _controllers;
-  TextEditingController _accountNameController;
   bool _edit = false;
 
   bool get isNew => _mode == AccountManagementScreen.MODE_ADD;
 
+  List<ExpandableItem> _expandableTradingOptions =
+      EnumsAsList.getTradingOptions()
+          .map((option) => ExpandableItem(
+                false,
+                option.value,
+                option.label,
+              ))
+          .toList();
+
   @override
   void didChangeDependencies() {
-    Map<String, dynamic> routeParams =
-        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    _mode = routeParams['mode'] as String;
-    _acc = routeParams['data'] as AccountEntity;
-    _accountNameController = TextEditingController(text: _acc.accountName);
-    _controllers = _acc.fees.map(
-      (key, value) => MapEntry(
-        key,
-        {
-          'percent': TextEditingController(
-            text: value.percent.toString(),
-          ),
-          'min': TextEditingController(
-            text: value.min.toString(),
-          ),
-          'max': TextEditingController(
-            text: value.max.toString(),
-          ),
-          'flatRate': TextEditingController(
-            text: value.flatRate.toString(),
-          ),
-          'flat': value.flat,
-        },
-      ),
-    );
+    _useRouteParams();
     super.didChangeDependencies();
   }
 
-  _getTitleText() {
-    String title;
+  void _useRouteParams() async {
+    Map<String, dynamic> routeParams =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    _mode = routeParams['mode'] as String;
+    AccountEntity account;
     if (_mode == AccountManagementScreen.MODE_ADD) {
-      title = 'Add Account';
-    } else if (_edit) {
-      title = 'Edit ${_acc.accountName}';
+      account = AccountEntity.create();
     } else {
-      title = _acc.accountName;
+      var accountId = routeParams['accountId'] as int;
+      account = await _accRepo.getById(accountId);
     }
-    return Text(title);
+    setState(() {
+      _acc = account;
+    });
   }
 
-  setFlatFee(TradingOption option) {
+  _onAccountNameChange(String value) {
+    _acc.accountName = value;
+  }
+
+  _onDpFeeChange(String value) {
+    _acc.dpFee = value.convertToDouble();
+  }
+
+  _updateFeeSection(TradingOption option, AccountFeeModel model) {
     setState(() {
-      _controllers[option]['flat'] = !_controllers[option]['flat'];
+      _acc.fees[option] = model;
     });
+  }
+
+  _getTitleText() {
+    return AccountManagementScreen.MODE_ADD == _mode
+        ? Text('Add Account')
+        : Text('Edit Account');
+  }
+
+  refresh() {
+    setState(() {});
   }
 
   @override
@@ -95,17 +114,18 @@ class _AccountScreenState extends State<AddOrEditAccountScreen> {
               builder: (ctx) => IconButton(
                 icon: Icon(Icons.save),
                 onPressed: () async {
+                  print(_acc.toJson());
                   try {
-                    AccountEntity ae = _prepareAccount(context);
-                    if (null != ae) {
+                    if (null != _acc) {
+                      _acc.accountName = _acc.accountName.capitalize();
                       await Provider.of<AccountProvider>(context, listen: false)
-                          .createOrUpdateAccount(_prepareAccount(context));
+                          .createOrUpdateAccount(_acc);
                       Navigator.pop(context);
                     }
                   } on DatabaseException catch (e) {
                     if (e.isUniqueConstraintError(
                         AccountEntity.COLUMN_ACCOUNT_NAME)) {
-                      alertUtils.showAlert(
+                      showAlert(
                         context: ctx,
                         message: 'Account already exists with this name',
                       );
@@ -116,75 +136,91 @@ class _AccountScreenState extends State<AddOrEditAccountScreen> {
             )
         ],
       ),
-      body: AccountFee(
-        controllers: _controllers,
-        accountController: _accountNameController,
-        edit: _edit || _mode == AccountManagementScreen.MODE_ADD,
-        setFlatFee: setFlatFee,
-      ),
+      body: null == _acc
+          ? Loader()
+          : Form(
+              onChanged: () {},
+              key: _formKey,
+              child: ListView(
+                children: [
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    child: AccountTextFormField(
+                      readOnly: !_edit && !isNew,
+                      title: 'Account Name',
+                      placeholder: 'Enter Account Name',
+                      initialValue: _acc.accountName,
+                      onChange: _onAccountNameChange,
+                      textAlign: TextAlign.left,
+                      textInputType: TextInputType.text,
+                    ),
+                  ),
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'DP charges (₹)',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 120.0,
+                          child: AccountTextFormField(
+                            readOnly: !_edit && !isNew,
+                            title: '',
+                            placeholder: '',
+                            initialValue: _acc.dpFee.toStringSafe(),
+                            onChange: _onDpFeeChange,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ExpansionPanelList(
+                    expandedHeaderPadding: EdgeInsets.symmetric(
+                      vertical: 0,
+                      horizontal: 0.0,
+                    ),
+                    elevation: 0,
+                    animationDuration: Duration(
+                      milliseconds: 500,
+                    ),
+                    expansionCallback: (int index, bool isExpanded) {
+                      setState(() {
+                        _expandableTradingOptions[index].expanded =
+                            !_expandableTradingOptions[index].expanded;
+                      });
+                    },
+                    children: _expandableTradingOptions
+                        .map(
+                          (option) => ExpansionPanel(
+                            headerBuilder: (_, __) {
+                              return ListTile(
+                                title: Text(option.header),
+                              );
+                            },
+                            body: AccountFeeSection(
+                              refresh: refresh,
+                              readOnly: !_edit && !isNew,
+                              tradingOption: option.tradingOption,
+                              accountFeeModel: _acc.fees[option.tradingOption],
+                              updateFeeSection: _updateFeeSection,
+                            ),
+                            isExpanded: option.expanded,
+                            canTapOnHeader: true,
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ],
+              ),
+            ),
     );
-  }
-
-  _prepareAccount(BuildContext context) {
-    var accountName = _accountNameController.text;
-    if (accountName.isEmpty) {
-      alertUtils.showAlert(
-        context: context,
-        message: 'Account name is required!',
-      );
-      return;
-    }
-    if (accountName.length < 2) {
-      alertUtils.showAlert(
-        context: context,
-        message: 'Account name should contain 2 letters!',
-      );
-      return;
-    }
-    if (accountName.split(' ').length > 1) {
-      alertUtils.showAlert(
-        context: context,
-        message: 'Account name should be of single word',
-      );
-      return;
-    }
-    accountName = accountName.capitalize();
-    var fees = _controllers.map(
-      (key, value) {
-        final flat = value['flat'] as bool;
-        var flatRate = 0.0;
-        var percent = 0.0;
-        var min = 0.0;
-        var max = 0.0;
-        if (flat) {
-          flatRate = (value['flatRate'] as TextEditingController)
-              .text
-              .convertToDouble();
-        } else {
-          percent = (value['percent'] as TextEditingController)
-              .text
-              .convertToDouble();
-          min = (value['min'] as TextEditingController).text.convertToDouble();
-          max = (value['max'] as TextEditingController).text.convertToDouble();
-        }
-        FeeModel fee = FeeModel(
-          flat: flat,
-          flatRate: flatRate,
-          min: min,
-          max: max,
-          percent: percent,
-        );
-        return MapEntry(key, fee);
-      },
-    );
-    AccountEntity ae = AccountEntity();
-    if (_mode == AccountManagementScreen.MODE_EDIT) {
-      ae.id = _acc.id;
-    }
-    ae.accountName = accountName;
-    ae.fees = fees;
-    ae.isActive = 1;
-    ae.dpFee = 0.0;
-    return ae;
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stock_calculator/utils/constants.dart';
+import 'package:stockcalculator/utils/constants.dart';
 
 class TradingOptionFeeItem extends StatelessWidget {
   final String label;

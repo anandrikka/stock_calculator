@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:stock_calculator/utils/constants.dart';
+import 'package:stockcalculator/utils/constants.dart';
 
 class AppThemeData {
   static ThemeData getAppThemeData(BuildContext context) {
@@ -50,13 +50,13 @@ class AppThemeData {
               fontFamily: Constants.HEADING_FONT,
             ),
             bodyText1: TextStyle(
-              // fontSize: 18,
-              color: Colors.black87,
-            ),
+                // fontSize: 18,
+                // color: Colors.black87,
+                ),
             bodyText2: TextStyle(
-              // fontSize: 16,
-              color: Colors.black87,
-            ),
+                // fontSize: 16,
+                // color: Colors.black87,
+                ),
           ),
     );
   }
