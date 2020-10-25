@@ -8,7 +8,6 @@ class AboutScreen extends StatefulWidget {
 
 class _AboutScreenState extends State<AboutScreen> {
   // WebViewController _controller;
-  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
