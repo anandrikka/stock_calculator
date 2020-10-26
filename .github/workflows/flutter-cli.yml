@@ -20,7 +20,7 @@ jobs:
       - run: flutter pub get
       - run: flutter format --set-exit-if-changed .
 #       - run: flutter analyze .
-      - run: flutter build apk
+      - run: flutter build appbundle --verbose
 
       - uses: actions/upload-artifact@v2
         with:
