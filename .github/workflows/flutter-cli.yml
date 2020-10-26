@@ -15,12 +15,12 @@ jobs:
           java-version: '12.x'
       - uses: subosito/flutter-action@v1
         with:
-          channel: 'stable'
-
+          flutter-version: 1.22.2
+      - run: flutter clean
       - run: flutter pub get
       - run: flutter format --set-exit-if-changed .
-      - run: flutter analyze .
-      - run: flutter build appbundle
+#       - run: flutter analyze .
+      - run: flutter build appbundle --verbose
 
       - uses: actions/upload-artifact@v2
         with:
