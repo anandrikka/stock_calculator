@@ -19,8 +19,8 @@ jobs:
       - run: flutter doctor -v
       - run: flutter clean
       - run: flutter pub get
-#       - run: flutter format --set-exit-if-changed .
-#       - run: flutter analyze .
+      - run: flutter format --set-exit-if-changed .
+      - run: flutter analyze .
       - run: flutter build appbundle
 
       - uses: actions/upload-artifact@v2
