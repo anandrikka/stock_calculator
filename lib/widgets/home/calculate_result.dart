@@ -77,6 +77,10 @@ class _CalculateResultsState extends State<CalculateResults> {
           label: 'Stampduty',
           amount: response.stampduty,
         ),
+        _ChargesRow(
+          label: 'DP Charges',
+          amount: response.dp,
+        ),
         Divider(
           height: 1,
         ),

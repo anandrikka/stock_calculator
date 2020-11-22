@@ -29,7 +29,7 @@ class SettingsLandingScreen extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                '2.0.0',
+                '2.0.1',
               ),
             ),
           ),

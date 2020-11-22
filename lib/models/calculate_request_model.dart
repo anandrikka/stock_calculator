@@ -41,7 +41,13 @@ class CalculateRequestModel {
   double get sellTxAmt => sellPrice * lotSize * quantity;
   double get txAmt => buyTxAmt + sellTxAmt;
   double get strikeTxAmt => strikeTxBuyAmt + strikeTxSellAmt;
-  double get dpCharges => account.dpFee * gst * 0.01;
+  double get dpCharges {
+    double charges = 0.0;
+    if (account.dpFee > 0) {
+      charges = account.dpFee + (account.dpFee * gst * 0.01);
+    }
+    return charges;
+  }
 
   CalculateResponseModel calculate() {
     CalculateResponseModel response = CalculateResponseModel();
@@ -76,7 +82,7 @@ class CalculateRequestModel {
           response.totalTaxesAndCharges;
     }
 
-    if (tradeType == TradingOption.EQUITY_DELIVERY) {
+    if (tradeType == TradingOption.EQUITY_DELIVERY && sellTxAmt > 0) {
       response.dp = dpCharges;
     }
 
@@ -182,7 +188,11 @@ class CalculateRequestModel {
     double stampduty = calculateStampduty(buyTxAmt, sellTxAmt);
     double sebi = calculateSEBI(buyTxAmt + sellTxAmt);
     // double clearingFee = calculateClearingFee(buyTxAmt + sellTxAmt);
-    return brokerage + sst + exchange + gst + stampduty + sebi;
+    double totalCharges = brokerage + sst + exchange + gst + stampduty + sebi;
+    if (tradeType == TradingOption.EQUITY_DELIVERY && sellTxAmt > 0) {
+      totalCharges = totalCharges + dpCharges;
+    }
+    return totalCharges;
   }
 
   double calculateBreakEven() {
@@ -197,7 +207,12 @@ class CalculateRequestModel {
     // if (tradeType == TradingOption.EQUITY_DELIVERY) {
     //   dp = dpCharges;
     // }
+    int iterations = 0;
     while (true) {
+      iterations++;
+      if (iterations > 100000) {
+        break;
+      }
       double sellTxAmt = sellPrice * lotSize * quantity;
       double totalSellCharges = calculateTotalCharges(0.0, sellTxAmt,
           strikeTxSellAmt: strikeTxSellAmt);
@@ -206,7 +221,7 @@ class CalculateRequestModel {
       if (profitOrLoss < -5) {
         sellPrice += step;
       } else if (profitOrLoss > 5) {
-        step -= 0.01;
+        step -= step / 100;
         sellPrice -= step;
       } else {
         break;
